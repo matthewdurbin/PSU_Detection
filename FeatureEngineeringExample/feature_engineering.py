@@ -148,7 +148,7 @@ print("===========================")
 
 
 #%% Feature improtances 
-def feature_importance(x,y):
+def feature_importance(x,y,title):
     """
     Calculates the Gini improtance/ mean decrease in importance
     for inputs x and labels y. Returns, and plots, these importances
@@ -158,39 +158,40 @@ def feature_importance(x,y):
     importances = rfc.feature_importances_
     plt.figure()
     plt.bar(np.arange(0,len(x[0]),1),importances)
+    plt.title(title)
     plt.xlabel('Feature Number')
     plt.ylabel('Relative Importance')
-    
+
     return(importances)
 
 #%% Feaure importances expirements
 print("===========================")
 print("Peaks and Compton")
 print("===========================")
-fi_both = feature_importance(x_both, y)
+fi_both = feature_importance(x_both, y, 'Feature Improtances - Peaks and Compton')
 
 print("===========================")
 print("Peaks, Compton, Iso")
 print("===========================")
-fi_pci = feature_importance(x_pci, y)
+fi_pci = feature_importance(x_pci, y, 'Feature Improtances - Peaks, Compton, and Isotopes')
 
 print("===========================")
 print("Peaks, Compton, Det Order")
 print("===========================")
-fi_pcd = feature_importance(x_pcd, y)
+fi_pcd = feature_importance(x_pcd, y, 'Feature Improtances - Peaks, Comptons, and Detector Order')
 
 print("===========================")
 print("Peaks, Compton, Iso, Det Order")
 print("===========================")
-fi_pcid = feature_importance(x_pcid, y)
+fi_pcid = feature_importance(x_pcid, y, 'Feature Improtances - Peaks, Compton, Isotope and Detector Order')
 
 print("===========================")
 print("Bins")
 print("===========================")
-fi_bins = feature_importance(x_bins, y)
+fi_bins = feature_importance(x_bins, y, 'Feature Improtances - Spectral Bins')
 print("===========================")
 
-#%%  Permutatio Importance
+#%%  Permutative Importance
 """
 This type of importance is much more time consuming, so i just give one example
 It calculates the Mean Decrease in Accuracy if a feature value is shuffled 
@@ -199,7 +200,9 @@ It creates a dictonary with importances over 5 permutations, the means, and std
 rfc = RandomForestClassifier()
 rfc.fit(x_pcid, y)
 p_imp = permutation_importance(rfc, x_pcid, y)
+plt.figure()
 plt.bar(np.arange(0,len(x_pcid[0]),1),p_imp['importances_mean'], yerr=p_imp['importances_std'])
+plt.title('Permutative Feature Improtances - Peaks, Compton, Isotope and Detector Order')
 plt.xlabel('Feature Number')
 plt.ylabel('Relative Importance')
 
